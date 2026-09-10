@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 """Pre-delivery QA for a set of platform markdown files.
 
-Usage:  python3 scripts/qa_check.py out/<slug>-*.md
+Usage:  python3 scripts/qa_check.py out/<slug>-*.md [--links sources/<slug>/links.json]
+
 Medium is the alignment baseline; it must be among the files.
+
+--links enables link integrity: every URL in the manifest must appear in EVERY
+platform file, byte-identical (query string and all), carrying non-empty
+descriptive anchor text. Outbound URLs not in the manifest are flagged too, so a
+rewrite cannot invent or drop a destination. Affiliate and UTM-tagged links are
+revenue-critical: a silently stripped ?utm_ or a "smartened" apostrophe in the
+anchor is a real loss, so this check is exact, not fuzzy.
 """
-import re, sys, os
+import re, sys, os, json, unicodedata
 
 def base(u): return u.split('/')[-1].split('.')[0]
 
@@ -20,7 +28,66 @@ def sentences(text):
                 out.append(s.strip())
     return set(out)
 
+LINK_RE = re.compile(r'(?<!!)\[([^\]]*)\]\((https?://[^)\s]+)\)')
+
+def check_links(files, manifest_path):
+    """Every manifest URL present in every file, byte-identical, properly anchored."""
+    man = json.load(open(manifest_path, encoding='utf-8'))
+    want = {m['url'] for m in man}
+    canon_anchor = {m['url']: m['anchor'] for m in man}
+    problems = 0
+    print(f"\n=== link integrity ({len(want)} manifest URLs x {len(files)} files) ===")
+    for name, t in sorted(files.items()):
+        found = LINK_RE.findall(t)
+        seen = {u for _, u in found}
+        missing = want - seen
+        extra = seen - want
+        bad_anchor = []
+        for anchor, url in found:
+            a = anchor.strip()
+            if url in want and (not a or a.lower().startswith('http') or
+                                a.lower() in ('here', 'click here', 'link', 'this')):
+                bad_anchor.append((a, url))
+        # a bare URL pasted as text is a link that lost its anchor
+        stripped = t
+        for _, u in found:
+            stripped = stripped.replace(f']({u})', ']()')
+        naked = [u for u in want if u in stripped]
+        # near-miss: manifest URL present only with its query string altered
+        truncated = []
+        for u in missing:
+            base = u.split('?')[0]
+            if base in t:
+                truncated.append(base)
+        issues = []
+        if missing:   issues.append(f"MISSING {len(missing)}")
+        if extra:     issues.append(f"UNKNOWN-URL {len(extra)}")
+        if bad_anchor:issues.append(f"BAD-ANCHOR {len(bad_anchor)}")
+        if naked:     issues.append(f"BARE-URL {len(naked)}")
+        if truncated: issues.append(f"QUERY-STRIPPED {len(truncated)}")
+        problems += len(issues)
+        print(f"  {name:46} links={len(found):2} {', '.join(issues) or 'all 8 intact'}")
+        for u in sorted(missing):    print(f"      MISSING:        {u}")
+        for u in sorted(extra):      print(f"      NOT IN MANIFEST:{u}")
+        for b in sorted(truncated):  print(f"      QUERY STRIPPED: {b}")
+        for u in sorted(naked):      print(f"      BARE URL:       {u}")
+        for a, u in bad_anchor:      print(f"      WEAK ANCHOR:    {a!r} -> {u}")
+    # anchor drift across files is allowed (prose is rewritten) but reported
+    print("  anchor text per URL:")
+    for m in man:
+        anchors = set()
+        for t in files.values():
+            for a, u in LINK_RE.findall(t):
+                if u == m['url']: anchors.add(a.strip())
+        src = canon_anchor[m['url']]
+        mark = 'source' if anchors == {src} else 'rewritten'
+        print(f"    {mark:9} {src[:38]:38} -> {sorted(anchors)}")
+    return problems
+
 def main(paths):
+    manifest = None
+    if '--links' in paths:
+        i = paths.index('--links'); manifest = paths[i+1]; paths = paths[:i] + paths[i+2:]
     files = {os.path.basename(p): open(p, encoding='utf-8').read() for p in paths}
     med = next((k for k in files if 'medium' in k), None)
     if not med:
@@ -71,6 +138,9 @@ def main(paths):
                 print(f"  HIGH {a} vs {b}: {pct:.1f}%")
                 problems += 1
     print(f"  worst pair: {worst[1]} = {worst[0]:.1f}%")
+
+    if manifest:
+        problems += check_links(files, manifest)
 
     print("\n" + ("PASS — ready to deliver" if problems == 0
                   else f"{problems} problem(s) — fix before delivering"))
