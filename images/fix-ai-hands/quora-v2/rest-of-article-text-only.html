@@ -1,0 +1,146 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>rest</title><style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto}</style></head><body><p><strong>Case 2: coffee mug</strong></p>
+<p><em>Top: Original (1,408 × 768). Bottom: Hand Fix (1,408 ×
+768).</em></p>
+<p><em>Top: Inpainting (1,408 × 768). Bottom: Reference Pro (2,816 ×
+1,536; shown scaled down).</em></p>
+<p><em>Hand crops at matched scale.</em></p>
+<p><em>Inpainting mask, settings, and prompt.</em></p>
+<p><strong>Case 3: crossed arms</strong></p>
+<p><em>Top: Original (1,408 × 768). Bottom: Hand Fix (1,408 ×
+768).</em></p>
+<p><em>Top: Inpainting (1,408 × 768). Bottom: Reference Pro (2,816 ×
+1,536; shown scaled down).</em></p>
+<p><em>Hand crops at matched scale (my annotated crops, not raw
+files).</em></p>
+<p><em>Inpainting mask, settings, and prompt.</em></p>
+<h2 id="always-look-at-the-whole-picture-afterward">Always look at the
+whole picture afterward</h2>
+<p>A nice close-up of the hand can hide a ruined face or outfit, so I
+compare the full file I downloaded with the original, checking:</p>
+<ul>
+<li><strong>Anatomy and gesture:</strong> the right number of fingers,
+joints that bend sensibly, and the pose you wanted.</li>
+<li><strong>Hand-object contact:</strong> fingers hold the object
+without blending into it, and the object still has its original
+shape.</li>
+<li><strong>Wrist and sleeve:</strong> a clean line between them with no
+smudging.</li>
+<li><strong>Identity and style:</strong> the face, hair and line
+thickness match everything else.</li>
+<li><strong>Lighting and shadows:</strong> the skin colour and the
+shadows where things touch suit the scene.</li>
+<li><strong>Dimensions:</strong> keep track of the size you downloaded.
+Compare details at the same marked scale, because a bigger file can look
+sharper without the repair actually being better.</li>
+</ul>
+<p>Hand Fix and inpainting gave me files the same size as the originals,
+and I didn't notice any visible changes away from the hand. Reference
+Pro gave me bigger files and changed things all over the image. If
+keeping your character looking the same is what you care about, that
+counts for more than sharpness does.</p>
+<h2 id="what-to-do-if-your-first-attempt-goes-wrong">What to do if your
+first attempt goes wrong</h2>
+<p>My one real failure was inpainting the mug. I'd painted over the
+entire hand, part of the handle included, and asked for the fingers to
+hold the handle firmly. Since the handle was within the mask, it was
+redrawn along with the hand. What I got was a fist squeezing a dented
+mug that had lost its handle completely.</p>
+<p><em>Top: Original. Middle: First inpainting attempt (failed). Bottom:
+Adjusted attempt (handle left out of the mask).</em></p>
+<p><em>Mask and prompt for the adjusted attempt: the handle is left
+out.</em></p>
+<p>To fix it, I redid the mask so it only covered the hand, with the
+handle left outside, and added a sentence to the prompt asking it to
+leave the mug's shape and handle exactly as they were. Everything else
+stayed the same (feathering 8, strength 0.75), and it cost 1,500 credits
+again. This time the mug held its shape and the handle came back, though
+the fingers aren't curled around it. The outer edge of the hand and the
+spot where it meets the sleeve look a bit scratchy, and the mug looks
+smoother than it did originally.</p>
+<p>And when should you give up? If one mask has failed twice and each
+new attempt breaks something else, another generation probably won't
+save it. By then, it's often faster to paint the bad finger yourself in
+your own editing app than to keep spending credits.</p>
+<h2 id="so-which-method-would-i-pick-next-time">So which method would I
+pick next time?</h2>
+<h2 id="other-questions-people-ask">Other questions people ask</h2>
+<p><strong>Can an automatic hand fixer get rid of extra
+fingers?</strong> Yes, in my test. Fix hands removed the sixth finger in
+one go. It's still worth checking the fingertips and outlines
+afterward.</p>
+<p><strong>What do I write in an inpainting prompt for a hand?</strong>
+Describe the gesture, say how many fingers, and list anything that has
+to stay where it is, like the mug handle or the sleeve. Something vague
+like "make this a normal finger" was enough for a tiny extra finger
+sitting on its own, but not when there's an object right next to the
+hand.</p>
+<p><strong>Why does fixing the hand change the sleeve or the object it's
+holding?</strong> Anything in or close to your selection might get
+redrawn, and feathering blurs the edges together. Tools that work on the
+whole image, such as Reference Pro, redraw all of it.</p>
+<p><strong>Will upscaling fix wrong hand anatomy?</strong> No. An
+upscaler adds detail to what's already in the picture, so an extra
+finger just turns into a sharper extra finger. I didn't include an
+upscaler in this test.</p>
+<h2 id="getting-free-credits-through-my-link">Getting free credits
+through my link</h2>
+<p>If you want some credits to try this out, sign up with my personal <a
+href="https://pixai.art/referral?refCode=QKMPHF95&amp;utm_source=referral&amp;ref_entry=account_menu&amp;ref_platform=web">invitation
+link</a>. New users have to join via that link, make at least one
+generation, and log in on two different days. After that, we both get
+50,000 credits within 24 hours, so yes, I get the reward as well. That's
+separate from the repair costs I mentioned, and I haven't checked if a
+hand repair counts as the first generation.</p>
+<p>For more on the reference-editing method, take a look at the <a
+href="https://blog.pixai.art/en/pixai-reference-pro-guide-multi-image-editing-with-natural-language/">Reference
+Pro guide</a>.</p>
+<h2 id="the-prompts-and-settings-i-used">The prompts and settings I
+used</h2>
+<p><strong>Inpainting settings (all cases):</strong> Masked Area,
+feathering 8, strength 0.75, 1,500 credits.</p>
+<p><strong>Case 1 inpainting:</strong> Make this a normal finger.</p>
+<p><strong>Case 1 Reference Pro:</strong> Correct the raised hand to
+have exactly five anatomically correct fingers: one thumb, one index
+finger, one middle finger, one ring finger, and one little finger.
+Remove the extra sixth finger and naturally reconstruct the palm and
+surrounding finger connections. Preserve the original open-palm gesture,
+hand orientation, proportions, and wrist position. Keep the fingers
+clearly separated with realistic joints and natural spacing. Do not
+change the character's face, hair, clothing, pose, lighting, background,
+or illustration style. Only modify the hand.</p>
+<p><strong>Case 2 inpainting (first attempt):</strong> Correct the
+character's hand gripping the coffee mug. Ensure the fingers wrap
+securely around the handle with realistic contact and no merging between
+the hand and ceramic surface.</p>
+<p><strong>Case 2 inpainting (adjusted attempt):</strong> Correct the
+character's hand gripping the coffee mug. Ensure the fingers wrap
+securely around the handle with realistic contact and no merging between
+the hand and ceramic surface. Keep the mug's shape and handle exactly as
+they are. Mask: hand only, handle left out. Same settings, 1,500
+credits.</p>
+<p><strong>Case 2 Reference Pro:</strong> Correct the character's hand
+gripping the coffee mug. Separate the fused fingers and reposition the
+thumb so it rests naturally on the opposite side of the mug handle.
+Reconstruct the fingers with clear anatomical definition, natural
+joints, and believable proportions. Ensure the fingers wrap securely
+around the handle with realistic contact and no merging between the hand
+and ceramic surface. Preserve the original mug shape, handle, hand
+position, and overall gripping gesture. Do not alter the character's
+face, hair, sweater, pose, lighting, background, or illustration style.
+Only modify the hand and its immediate contact area with the mug.</p>
+<p><strong>Case 3 inpainting:</strong> Correct the visible hand resting
+on the opposite forearm. Reconstruct the fingers so they are
+anatomically distinct and naturally rest against the jacket sleeve
+instead of merging into the fabric.</p>
+<p><strong>Case 3 Reference Pro:</strong> Correct the visible hand
+resting on the opposite forearm. Reconstruct the fingers so they are
+anatomically distinct and naturally rest against the jacket sleeve
+instead of merging into the fabric. Define the wrist-to-sleeve
+transition clearly, with believable hand placement, finger separation,
+and natural contact shadows. Preserve the original crossed-arm pose,
+hand orientation, and partial overlap with the sleeve. Maintain the
+jacket's original shape, folds, texture, and color. Do not change the
+character's face, hair, clothing design, body position, lighting,
+background, or illustration style. Only modify the hand and the
+immediate wrist and sleeve boundaries.</p>
+</body></html>
