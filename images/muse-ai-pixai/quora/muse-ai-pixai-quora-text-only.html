@@ -1,0 +1,438 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>Quora text only</title><style>body{font-family:Georgia,serif;font-size:17px;line-height:1.65;max-width:760px;margin:40px auto;padding:0 20px;color:#111}em{color:#555}li{margin:4px 0}blockquote{border-left:3px solid #ccc;margin:16px 0;padding:2px 16px;color:#333}</style></head><body><h1 id="how-can-you-use-muse-ai-to-make-anime-images-with-pixai">How Can
+You Use Muse AI to Make Anime Images with PixAI?</h1>
+<p><em>I ran this whole test on November 18, 2026, in Muse on the web
+(the cloud workspace version). Every step, setting and credit count
+you'll see comes from that session.</em></p>
+<p>Short answer: Muse AI, Meta's personal AI agent, doesn't actually
+draw anything in this setup. It writes and runs a small script that
+sends requests to the PixAI API, and PixAI makes the images. Below is
+the exact route I took, from setup to a single test image to four
+more.</p>
+<p>Some quick definitions. An API is a way for one tool to ask another
+to do something; here, Muse asks PixAI for a picture. An API key is the
+credential showing that the request is really yours. Think of it as a
+password that allows Muse to generate images through your PixAI
+account.</p>
+<p>To follow along, you need access to Muse, a PixAI account with API
+access, and enough credits for one test and a small batch.</p>
+<h2 id="what-i-ended-up-with-and-why-muse-was-worth-using">What I ended
+up with, and why Muse was worth using</h2>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 01: 01_01_fig1_first_test_image.jpg]]</strong></p>
+<p><em>Figure 1. The first image Muse got PixAI to generate: an original
+silver-haired character in an autumn park (864 × 1152 px, 3:4).</em></p>
+<p>My first move was to ask Muse for just one picture and inspect it.
+Then Muse drafted four more scenes and ran them, so I never had to type
+the prompts into PixAI one at a time. Honestly, that batch step is the
+main reason to bother with Muse at all.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 02: 02_02_first_request_to_muse.jpg]]</strong></p>
+<p><em>Screenshot: my first request to Muse. Check the prompt, aspect
+ratio and the “exactly ONE image” line. The ID here is wrong; see
+Troubleshooting.</em></p>
+<p>Be aware that this is a custom Muse AI image generation workflow
+running on the public PixAI API. I based it on <a
+href="https://blog.pixai.art/en/muse-pixai-api-guide/">PixAI’s own Muse
+guide</a>. It isn't an official connector between Muse and PixAI, so it
+may behave differently depending on your account or region.</p>
+<h2 id="what-should-you-have-ready">What should you have ready?</h2>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 03: 03_t1_requirements.jpg]]</strong></p>
+<p>PixAI's <a href="https://platform.pixai.art/en/docs/faq">API FAQ</a>
+says either key route works the same way, although an emailed request
+can take up to five business days. I went with membership on a starter
+account: avatar → Settings → API Platform → Create API key. The current
+steps live on the <a
+href="https://platform.pixai.art/en/docs/quick-start/enroll-in-api">how
+to access the API</a> page, so double-check there before starting. For
+what plans and credits cost, the <a
+href="https://blog.pixai.art/en/pixai-pricing-guide-free-credits-membership-and-commercial-use/">PixAI
+pricing guide</a> has it.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 04: 04_03_api_platform_settings.jpg]]</strong></p>
+<p><em>Screenshot: Settings → API Platform. Click New API key to
+start.</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 05: 05_04_create_api_key_dialog.jpg]]</strong></p>
+<p><em>Screenshot: the Create API key dialog. The name is optional; I
+used a 30-day expiry.</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 06: 06_05_api_key_dialog_redacted.jpg]]</strong></p>
+<p><em>Screenshot: the one-time key dialog, key hidden. Copy it before
+clicking Done.</em></p>
+<h2 id="why-test-the-model-on-pixai-before-using-muse">Why test the
+model on PixAI before using Muse?</h2>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 07:
+07_06_fig2_pixai_website_sample.jpg]]</strong></p>
+<p><em>Figure 2. My sample made directly on the PixAI website with
+Tsubaki.3, before involving Muse.</em></p>
+<p>Before Muse got involved, I made this sample on <a
+href="https://eap.pixai.art/go/rehan">PixAI</a> with <a
+href="https://eap.pixai.art/go/rehan2">Tsubaki.3</a> and the very prompt
+I'd hand Muse later. That way I could judge the model and the prompt
+without touching API credits. One catch: website generations can still
+use your regular account credits.</p>
+<p>After that, make sure the API actually supports what you want. At the
+moment, text-to-image, inpainting, outpainting, LoRAs and Tsubaki.3
+reference images all work. Reference Pro, PixAI Edit and Edit Lite don't
+yet.</p>
+<p>Then find your model version ID. Open the model page, click the
+version you want (V1 in my case) and copy the second ID in the URL, not
+the general model ID. For my Tsubaki.3 run, it was
+2024383379556065549.</p>
+<p>Why the fuss? A model ID points to the model in general. A model
+version ID points to one specific version, and that's the one the API
+needs for this request.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 08: 08_07_tsubaki3_model_page.jpg]]</strong></p>
+<p><em>Screenshot: the Tsubaki.3 page with V1 selected. The second URL
+ID is the version ID.</em></p>
+<h2 id="how-do-you-connect-muse-ai-to-the-pixai-api">How do you connect
+Muse AI to the PixAI API?</h2>
+<p>Muse has two options with PixAI: operate the website like a person
+clicking around (browser actions), or call the API directly. The API is
+better for repeated requests, so I used that. Starting a new Muse chat
+on the web, I followed six steps and relied on PixAI's <a
+href="https://platform.pixai.art/en/docs">API documentation</a> for the
+technical details. Steps 1, 2, 4 and 5 are messages I sent Muse word for
+word. You handle Step 3 yourself.</p>
+<h3 id="step-1-hand-muse-the-documentation">Step 1: Hand Muse the
+documentation</h3>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>I want to connect you to the PixAI API so you can help me generate
+anime images.</p>
+<p>Read the official PixAI API documentation first:</p>
+<p><a
+href="https://platform.pixai.art/en/docs">https://platform.pixai.art/en/docs</a></p>
+<p>Also refer to the first API call guide:</p>
+<p><a
+href="https://platform.pixai.art/en/docs/quick-start/first-api-call">https://platform.pixai.art/en/docs/quick-start/first-api-call</a></p>
+<p>I want you to use the PixAI API directly, not operate the PixAI
+website through browser automation.</p>
+<p>Explain the setup you need before making any API requests. Do not
+generate anything yet.</p>
+</blockquote>
+<p>Muse answered that it had read both pages and sent no requests. It
+listed what it would need: the base URL, bearer-key authorization,
+create-then-poll calls, and my API key. It also proposed a secure link
+for the key, but I chose the file method in Step 3 because that's what
+PixAI's guide uses.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 09: 09_08_step1_muse_reply.jpg]]</strong></p>
+<p><em>Screenshot: Muse’s reply after reading the docs. Check that it
+says nothing has been generated yet.</em></p>
+<h3 id="step-2-make-a-folder-for-the-project">Step 2: Make a folder for
+the project</h3>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>Create a folder named pixai-batch in your workspace.</p>
+<p>Inside it, create a file named Sample.env.txt containing this
+line:</p>
+<p>PIXAI_API_KEY=</p>
+<p>Do not generate any images or make API requests yet. Tell me when the
+file is ready.</p>
+</blockquote>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 10: 10_09_step2_folder_and_env.jpg]]</strong></p>
+<p><em>Screenshot: my Step 2 message and Muse’s confirmation. Check that
+it reports no images and no API requests.</em></p>
+<h3 id="step-3-add-the-key-on-your-own">Step 3: Add the key on your
+own</h3>
+<p>Go to Library in Muse, then System files, then the pixai-batch
+folder, and open Sample.env.txt. Paste your key straight after the
+equals sign and hit save:</p>
+<p><strong>FILE CONTENT (PLACEHOLDER: INSERT YOUR OWN KEY)</strong></p>
+<blockquote>
+<p>PIXAI_API_KEY=YOUR_API_KEY_HERE</p>
+</blockquote>
+<p><strong>Your real key should never go into the Muse chat.</strong>
+Put it in the workspace file. That keeps it out of the chat transcript,
+but remember it's still saved in your workspace. Don't share that file,
+don't show what's in it in screenshots or logs, and don't put it in
+anything others can download. Treat it with the same care as any API
+credential.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 11: 11_10_step3_system_files.jpg]]</strong></p>
+<p><em>Screenshot: pixai-batch in System files. The red box marks
+Sample.env.txt.</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 12: 12_11_step3_sample_env.jpg]]</strong></p>
+<p><em>Screenshot: Sample.env.txt in Muse. Add your key after the equals
+sign.</em></p>
+<h3 id="step-4-rename-it-to-env">Step 4: Rename it to .env</h3>
+<p>So what's a .env file? It's a config file where a script keeps things
+it needs, like API credentials. The script reads your key from there, so
+the key never appears in the code itself.</p>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>Rename Sample.env.txt to .env inside the pixai-batch folder.</p>
+<p>Do not change or display the API key. Confirm that the file is saved
+in the correct location and that your script will be able to read the
+PIXAI_API_KEY environment variable from it.</p>
+</blockquote>
+<p>PixAI's guide mentions that after renaming, the file may no longer
+show in Muse's web view. That's expected.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 13: 13_12_step4_rename_to_env.jpg]]</strong></p>
+<p><em>Screenshot: Muse confirming the rename to .env.</em></p>
+<h3 id="step-5-ask-muse-for-the-script">Step 5: Ask Muse for the
+script</h3>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>Inside the pixai-batch folder, prepare a Python script that connects
+to the PixAI API.</p>
+<p>Requirements:</p>
+<ul>
+<li>Read PIXAI_API_KEY securely from the .env file. Never print or
+expose the key.</li>
+<li>Use the official PixAI API v2 endpoint for image generation: POST <a
+href="https://api.pixai.art/v2/image/create">https://api.pixai.art/v2/image/create</a>.</li>
+<li>Authenticate using the Authorization: Bearer API_KEY header.</li>
+<li>Allow me to provide a modelVersionId, prompt, negative prompt,
+aspect ratio and other supported generation settings.</li>
+<li>Submit one image-generation task at a time.</li>
+<li>Retrieve the task ID and check its status until it completes or
+fails.</li>
+<li>Download the completed image into an output folder.</li>
+<li>Log the task ID, generation settings, status and credit usage where
+available.</li>
+<li>Do not automatically resubmit a request if it times out. Check the
+existing task first.</li>
+<li>Before executing any generation request, show me the request details
+and wait for my approval.</li>
+</ul>
+<p>Use the current official PixAI API documentation rather than guessing
+parameter names or endpoints.</p>
+<p>Do not generate anything yet. First show me the script and explain
+how it works.</p>
+</blockquote>
+<p>What the script does: it sends the prompt, receives a task ID, and
+keeps checking the task's status until the image can be downloaded. That
+repeated checking is what people call polling. PixAI's docs advise a gap
+of at least 1.5 seconds between checks, and they also say to download
+images soon, because generated media isn't stored forever.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 14: 14_13_step5_script_summary.jpg]]</strong></p>
+<p><em>Screenshot: Muse’s script summary. Check that it reports no
+generation.</em></p>
+<h2 id="how-do-you-generate-the-first-test-image">How do you generate
+the first test image?</h2>
+<p>I picked an original character with distinctive features, so drift
+would be easy to notice. I also asked Muse to show me the request and
+wait until I approved it:</p>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>Let's test the PixAI connection.</p>
+<p>Use the following settings:</p>
+<p>Model: Tsubaki.3</p>
+<p>Model version ID: 2024383379556065549</p>
+<p>Aspect ratio: 3:4</p>
+<p>Batch size: 1</p>
+<p>Prompt: An original anime girl with a short silver bob haircut, warm
+amber eyes, wearing a black jacket and a red scarf. She is standing in a
+quiet autumn park, with golden leaves falling around her. Soft afternoon
+sunlight, detailed anime illustration, clean linework and expressive
+eyes.</p>
+<p>Generate exactly ONE image.</p>
+<p>Before submitting the request, show me the complete API request,
+including the prompt and generation settings. Wait for my approval
+before spending any credits.</p>
+<p>After approval, submit the task, retrieve the result and save the
+image in the output folder. Report the task ID, final status and actual
+credit consumption.</p>
+</blockquote>
+<p>The settings for my test were:</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 15: 15_t2_test_settings.jpg]]</strong></p>
+<p>My PixAI balance dropped by 4000 credits for this test. I confirmed
+that using the paidQuota value each completed task sends back.</p>
+<p>My advice: test one image first, then compare.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 16: 16_14_preapproval_summary.jpg]]</strong></p>
+<p><em>Screenshot: Muse’s pre-approval summary. Check that nothing has
+been submitted yet.</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 17: 17_15_completed_test_task.jpg]]</strong></p>
+<p><em>Screenshot: the completed task. Check for exactly one task and
+status completed.</em></p>
+<p>The connection is working when the task reaches completed and the
+picture opens from your folder. Muse saves it in WebP format; click the
+image and use the download option at the top right.</p>
+<h2 id="how-do-you-go-from-one-image-to-a-batch">How do you go from one
+image to a batch?</h2>
+<p>With the single image done, I kept the same character and changed
+only where she was. I started by asking Muse to write the prompts so I
+could review them:</p>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>I want to generate four additional illustrations using the same anime
+character from our successful test.</p>
+<p>Keep these character features consistent:</p>
+<ul>
+<li>Short silver bob haircut</li>
+<li>Warm amber eyes</li>
+<li>Black jacket</li>
+<li>Red scarf</li>
+</ul>
+<p>Create four different scene prompts:</p>
+<ul>
+<li>The character walking through an autumn park.</li>
+<li>The character sitting beside a café window on a rainy day.</li>
+<li>The character standing on a snowy winter street.</li>
+<li>The character watching the sunset beside the sea.</li>
+</ul>
+<p>Keep the character description consistent and change the setting,
+lighting and pose as appropriate.</p>
+<p>Use descriptive natural-language prompts suitable for the selected
+PixAI model.</p>
+<p>Save all four prompts in prompts.csv inside the pixai-batch
+folder.</p>
+<p>Show me the complete prompts before generating anything.</p>
+</blockquote>
+<p>Read every prompt before you approve it. Watch for Muse quietly
+switching the hair colour or leaving out the scarf.</p>
+<p>These are the four prompts Muse wrote, which I approved:</p>
+<p><strong>PROMPT 1. WALKING THROUGH AN AUTUMN PARK</strong></p>
+<blockquote>
+<p>An original anime girl with a short silver bob haircut, warm amber
+eyes, wearing a black jacket and a red scarf. She is walking along a
+tree-lined path in a quiet autumn park, with golden and orange leaves
+falling around her and covering the ground, her red scarf trailing
+lightly as she walks, looking ahead with a calm, gentle expression. Soft
+afternoon sunlight filtering through the autumn trees, warm golden
+lighting. Detailed anime illustration, clean linework and expressive
+eyes.</p>
+</blockquote>
+<p><strong>PROMPT 2. SITTING BESIDE A CAFÉ WINDOW ON A RAINY
+DAY</strong></p>
+<blockquote>
+<p>An original anime girl with a short silver bob haircut, warm amber
+eyes, wearing a black jacket and a red scarf. She is sitting beside a
+cafe window on a rainy day, seated at a small wooden table with a warm
+cup of coffee, looking out thoughtfully at the rain, with raindrops
+running down the window glass beside her and a blurred wet street and
+soft city lights outside. Cozy warm interior lighting contrasting with
+the cool blue-grey rainy light outside. Detailed anime illustration,
+clean linework and expressive eyes.</p>
+</blockquote>
+<p><strong>PROMPT 3. STANDING ON A SNOWY WINTER STREET</strong></p>
+<blockquote>
+<p>An original anime girl with a short silver bob haircut, warm amber
+eyes, wearing a black jacket and a red scarf. She is standing on a snowy
+winter street, with gentle snowflakes falling around her and settling
+lightly on her silver hair and red scarf, standing in a quiet,
+snow-covered street with warm glowing street lamps and softly lit shop
+windows behind her. Cold blue winter twilight contrasting with warm lamp
+light, peaceful winter atmosphere. Detailed anime illustration, clean
+linework and expressive eyes.</p>
+</blockquote>
+<p><strong>PROMPT 4. WATCHING THE SUNSET BESIDE THE SEA</strong></p>
+<blockquote>
+<p>An original anime girl with a short silver bob haircut, warm amber
+eyes, wearing a black jacket and a red scarf. She is standing beside the
+sea watching the sunset, in a relaxed pose looking out over the water,
+her short silver hair and red scarf stirred by a gentle sea breeze, with
+calm waves, a wide sky in orange, pink and soft purple, and the sun low
+on the horizon reflecting on the sea. Warm golden-hour sunset lighting,
+peaceful and reflective mood. Detailed anime illustration, clean
+linework and expressive eyes.</p>
+</blockquote>
+<p>Next, I approved the prompts and told Muse to run one image per task,
+but to confirm the numbers before doing anything:</p>
+<p><strong>MESSAGE TO MUSE:</strong></p>
+<blockquote>
+<p>The four prompts are approved.</p>
+<p>Use the existing PixAI API script and the same model version and
+generation settings as our successful test.</p>
+<p>Generate exactly four additional images, submitting one image per
+task.</p>
+<p>Before execution, confirm:</p>
+<ul>
+<li>Number of requests: 4</li>
+<li>Images per request: 1</li>
+<li>Total expected images: 4</li>
+<li>Model version ID</li>
+<li>Estimated or displayed credit requirements, if available</li>
+</ul>
+<p>Wait for my confirmation before executing.</p>
+<p>After approval, complete all four tasks, retrieve the images and save
+them in the output folder with numbered filenames.</p>
+<p>Report all task IDs, successful outputs, failed requests, retries and
+actual credit consumption. Do not automatically retry failed or
+timed-out submissions.</p>
+</blockquote>
+<p>Muse confirmed four requests at one image each, the same version ID,
+and an estimate of around 16,000 credits based on the test. I said go,
+and it ran all four.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 18: 18_16_batch_preconfirmation.jpg]]</strong></p>
+<p><em>Screenshot: Muse’s pre-run confirmation. Check the request count,
+version ID and credit estimate.</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 19: 19_17_batch_finished.jpg]]</strong></p>
+<p><em>Screenshot: the finished batch. Check for failed requests and
+retries.</em></p>
+<p>As a final step, I had Muse gather all five pictures into one folder
+with numbered file names, plus a generation_log.txt that lists every
+task ID and its credit cost.</p>
+<p>Check the folder yourself: all five images should open, the names
+should match the scenes, and the log should include each task ID. If
+Muse gives you image URLs rather than files, ask it to download them. A
+link isn't the same as a saved image.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 20: 20_18_fig3_autumn_park.jpg]]</strong></p>
+<p><em>Figure 3. Autumn park (02_Autumn_Park).</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 21: 21_19_fig4_rainy_cafe.jpg]]</strong></p>
+<p><em>Figure 4. Rainy café window (03_Rainy_Cafe).</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 22: 22_20_fig5_winter_street.jpg]]</strong></p>
+<p><em>Figure 5. Snowy winter street (04_Winter_Street).</em></p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 23: 23_21_fig6_sunset_seaside.jpg]]</strong></p>
+<p><em>Figure 6. Sunset by the sea (05_Sunset_Seaside).</em></p>
+<p>paidQuota tells you how many credits were charged per generation. I
+took that number from the task records to work out the true cost of my
+test.</p>
+<p style="background:#fff3cd;padding:6px 10px;font-family:sans-serif"><strong>[[IMAGE 24: 24_t3_credits.jpg]]</strong></p>
+<p><strong>My test result:</strong></p>
+<p><strong>How my test went:</strong> five requests, five images, no
+retries and no failures. PixAI charged 4,000 credits per image, 20,000
+altogether, which matched Muse's estimate. Those numbers are for
+Tsubaki.3 at 864 × 1152, and they'll change with a different model or
+settings.</p>
+<p>I didn't run into any Muse usage limit along the way.</p>
+<p>So, did the character stay the same? Mostly. The silver bob, amber
+eyes and red scarf show up every time, but there's drift: in the winter
+image the short coat turns into a zip-up jacket with trousers, and the
+scarf changes in shade and shape. Running a batch automates the work. It
+doesn't guarantee a consistent character.</p>
+<h2 id="what-if-something-goes-wrong">What if something goes wrong?</h2>
+<p>I had exactly one problem, and I caused it: I gave Muse the model ID
+rather than the model version ID. Muse noticed before submitting,
+warning me that PixAI responds with 404 NOT_FOUND to a version ID it
+doesn't recognise. I swapped in the ID from the docs, and the rest ran
+with no errors.</p>
+<p><strong>Issues from the docs that I didn't hit myself:</strong></p>
+<ul>
+<li><strong>Authentication fails.</strong> Each call must include the
+key in an Authorization: Bearer header. Confirm the key is pasted after
+the equals sign in .env without extra spaces, that the file is saved,
+and that your membership or API approval is still active.</li>
+<li><strong>A request times out.</strong> Don't resubmit right away. The
+task may already exist, and retrying could charge you twice. Check your
+balance and history, then ask Muse to continue the existing task by its
+ID.</li>
+<li><strong>The image didn't save.</strong> Generated media won't stay
+around forever, so have Muse download the files. PixAI's <a
+href="https://platform.pixai.art/en/docs/quick-start/limits">limits
+page</a> also explains the cap on waiting tasks.</li>
+</ul>
+<h2 id="quick-faq">Quick FAQ</h2>
+<p><strong>Can a non-programmer do this?</strong> Yes. Muse can write
+and run the Python script for you. You still have to get your API key,
+set up the workspace file and review each request before you approve
+it.</p>
+<p><strong>What's free, and what needs API access or credits?</strong>
+Trying a model on PixAI's website works with a regular account, though
+those samples may use account credits (see the pricing guide linked
+above). The API needs a key, through membership or an approved email
+request, and each API generation costs credits.</p>
+<p><strong>Will API images show in my public history?</strong> No.
+They're private and don't appear in your public generation history.</p>
+<h2 id="want-to-try-it">Want to try it?</h2>
+<ul>
+<li>Sign up or log in to PixAI with the <a
+href="https://eap.pixai.art/go/rehan">PixAI generator</a>. If you join
+through my <a
+href="https://pixai.art/referral?refCode=QKMPHF95&amp;utm_source=referral&amp;ref_entry=account_menu&amp;ref_platform=web">referral
+link</a>, we both get 50,000 credits once you: verify your email (if you
+signed up with email), claim the Daily Reward on two separate days, and
+create at least one image or video. Just registering doesn't unlock the
+reward or API access, and it's for new accounts only.</li>
+<li>Try out a model and prompt on the website.</li>
+<li>Make sure you have API access and the correct model version ID.</li>
+<li>Follow the steps above, and get Muse to generate one image before
+attempting a batch.</li>
+</ul>
+<p>Once your first image is sitting in the folder, the rest of this Muse
+PixAI workflow is the same routine with new prompts. Enjoy!</p></body></html>
